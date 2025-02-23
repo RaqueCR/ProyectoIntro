@@ -3,6 +3,8 @@
 #include <locale.h> //caracteres sin problemas en español
 #include <limits> //limpiar entrada
 
+//Raquel Maria Fernandez Fernandez -  0208300391
+
 using namespace std;
 
 struct Pokemon { //estructura pokemon
@@ -14,6 +16,7 @@ struct Pokemon { //estructura pokemon
 
 vector<Pokemon> equipoPokemon; //vector para almacenar al equipo pokemon
 
+//inicializacion
 void mostrarMenu();
 void registrarPokemon(); //prototipo de la función para registrar un Pokémon
 void entrenarPokemon(); //prototipo de la función para entrenar un Pokémon
