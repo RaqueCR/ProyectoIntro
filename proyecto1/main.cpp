@@ -16,6 +16,7 @@ vector<Pokemon> equipoPokemon; //vector para almacenar al equipo pokemon
 void mostrarMenu();
 void registrarPokemon(); //prototipo de la función para registrar un Pokémon
 void entrenarPokemon(); //prototipo de la función para entrenar un Pokémon
+void mostrarEquipoPokemon(); //prototipo de la función para mostrar el equipo Pokémon
 bool idExiste(int id); //prototipo de la función para validar ID existente
 string obtenerTipoPokemon(int opcion); //prototipo para obtener el tipo de Pokémon
 string obtenerTipoEntrenamiento(int opcion); //prototipo para obtener el tipo de entrenamiento
@@ -39,7 +40,7 @@ int main() {
                 entrenarPokemon(); //llamada a la función de entrenamiento
                 break;
             case 3:
-                cout << "Opción 3: Mostrar equipo Pokémon\n";
+                mostrarEquipoPokemon(); //llamada a la función para mostrar el equipo
                 break;
             case 4:
                 cout << "Opción 4: Mostrar el Pokémon más fuerte\n";
@@ -195,5 +196,22 @@ void entrenarPokemon() { //función para entrenar un Pokémon
     //mensaje si el ID no existe
     if (!encontrado) {
         cout << "No se encontró un Pokémon con el ID ingresado.\n";
+    }
+}
+
+void mostrarEquipoPokemon() { //función para mostrar el equipo Pokémon
+    if (equipoPokemon.empty()) {
+        cout << "No hay Pokémon registrados aún.\n";
+    } else {
+        cout << "\n=========================\n";
+        cout << "EQUIPO POKÉMON\n";
+        cout << "=========================\n";
+        for (const auto& pokemon : equipoPokemon) {
+            cout << "- Nombre: " << pokemon.nombre << "\n";
+            cout << "  ID: " << pokemon.id << "\n";
+            cout << "  Tipo: " << pokemon.tipo << "\n";
+            cout << "  Nivel de Poder: " << pokemon.nivel_poder << "\n";
+            cout << "-------------------------\n";
+        }
     }
 }
