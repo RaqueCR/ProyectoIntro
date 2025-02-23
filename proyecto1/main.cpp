@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <locale.h>
+#include <locale.h> //caracteres sin problemas en español
+#include <limits> //limpiar entrada
 
 using namespace std;
 
@@ -21,6 +22,7 @@ void mostrarPokemonMasFuerte(); //prototipo de la función para mostrar el Pokémo
 bool idExiste(int id); //prototipo de la función para validar ID existente
 string obtenerTipoPokemon(int opcion); //prototipo para obtener el tipo de Pokémon
 string obtenerTipoEntrenamiento(int opcion); //prototipo para obtener el tipo de entrenamiento
+int obtenerEntero(string mensaje, int minimo, int maximo); //prototipo para validar entrada de enteros
 
 int main() {
     setlocale(LC_ALL, "");//caracteres en español
@@ -29,8 +31,7 @@ int main() {
     //bucle
     do {
         mostrarMenu();
-        cout << "Seleccione una opción: ";
-        cin >> opcion;
+        opcion = obtenerEntero("Seleccione una opción: ", 1, 5);
 
         //menu
         switch (opcion) {
@@ -97,11 +98,26 @@ string obtenerTipoEntrenamiento(int opcion) { //función para obtener el tipo de 
     }
 }
 
+int obtenerEntero(string mensaje, int minimo, int maximo) { // Validación de entrada entera
+    int numero;
+    while (true) {
+        cout << mensaje;
+        cin >> numero;
+
+        if (cin.fail() || numero < minimo || numero > maximo) {
+            cin.clear(); // limpiar estado de error
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar el buffer
+            cout << "Entrada no válida. Intente de nuevo.\n";
+        } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // limpiar el buffer
+            return numero;
+        }
+    }
+}
+
 void registrarPokemon() { //función para registrar un Pokémon
     Pokemon nuevoPokemon;
     int tipoOpcion;
-
-    cin.ignore(); //limpiar
 
     //ingreso del nombre
     do {
@@ -114,35 +130,20 @@ void registrarPokemon() { //función para registrar un Pokémon
 
     //ingreso del ID
     do {
-        cout << "Ingrese el número de identificación (6 dígitos): ";
-        cin >> nuevoPokemon.id;
-        if (to_string(nuevoPokemon.id).length() != 6) {
-            cout << "El ID debe tener exactamente 6 dígitos.\n";
-        } else if (idExiste(nuevoPokemon.id)) {
+        nuevoPokemon.id = obtenerEntero("Ingrese el número de identificación (6 dígitos): ", 100000, 999999);
+        if (idExiste(nuevoPokemon.id)) {
             cout << "El ID ya existe. Intente con uno diferente.\n";
         }
-    } while (to_string(nuevoPokemon.id).length() != 6 || idExiste(nuevoPokemon.id));
+    } while (idExiste(nuevoPokemon.id));
 
     //selección del tipo de Pokémon
     do {
-        cout << "Seleccione el tipo de Pokémon:\n";
-        cout << "1. Fuego\n2. Agua\n3. Planta\n4. Eléctrico\n";
-        cout << "Ingrese una opción válida: ";
-        cin >> tipoOpcion;
+        tipoOpcion = obtenerEntero("Seleccione el tipo de Pokémon:\n1. Fuego\n2. Agua\n3. Planta\n4. Eléctrico\nIngrese una opción válida: ", 1, 4);
         nuevoPokemon.tipo = obtenerTipoPokemon(tipoOpcion);
-        if (nuevoPokemon.tipo == "Inválido") {
-            cout << "Opción inválida. Intente de nuevo.\n";
-        }
     } while (nuevoPokemon.tipo == "Inválido");
 
     //ingreso del nivel de poder inicial
-    do {
-        cout << "Ingrese el nivel de poder inicial (1-100): ";
-        cin >> nuevoPokemon.nivel_poder;
-        if (nuevoPokemon.nivel_poder < 1 || nuevoPokemon.nivel_poder > 100) {
-            cout << "El nivel de poder debe estar entre 1 y 100.\n";
-        }
-    } while (nuevoPokemon.nivel_poder < 1 || nuevoPokemon.nivel_poder > 100);
+    nuevoPokemon.nivel_poder = obtenerEntero("Ingrese el nivel de poder inicial (1-100): ", 1, 100);
 
     //agregar el Pokémon al vector
     equipoPokemon.push_back(nuevoPokemon);
@@ -154,8 +155,7 @@ void entrenarPokemon() { //función para entrenar un Pokémon
     bool encontrado = false;
 
     //ingreso del ID
-    cout << "Ingrese el ID del Pokémon a entrenar: ";
-    cin >> id;
+    id = obtenerEntero("Ingrese el ID del Pokémon a entrenar: ", 100000, 999999);
 
     //buscar el Pokémon por ID
     for (auto& pokemon : equipoPokemon) {
@@ -163,24 +163,10 @@ void entrenarPokemon() { //función para entrenar un Pokémon
             encontrado = true;
 
             //selección del tipo de entrenamiento
-            do {
-                cout << "Seleccione el tipo de entrenamiento:\n";
-                cout << "1. Combate en gimnasio\n2. Batalla con otro entrenador\n3. Práctica de habilidades\n";
-                cout << "Ingrese una opción válida: ";
-                cin >> tipoEntrenamiento;
-                if (obtenerTipoEntrenamiento(tipoEntrenamiento) == "Inválido") {
-                    cout << "Opción inválida. Intente de nuevo.\n";
-                }
-            } while (obtenerTipoEntrenamiento(tipoEntrenamiento) == "Inválido");
+            tipoEntrenamiento = obtenerEntero("Seleccione el tipo de entrenamiento:\n1. Combate en gimnasio\n2. Batalla con otro entrenador\n3. Práctica de habilidades\nIngrese una opción válida: ", 1, 3);
 
             //ingreso de la dificultad
-            do {
-                cout << "Ingrese la dificultad del entrenamiento (1-100): ";
-                cin >> dificultad;
-                if (dificultad < 1 || dificultad > 100) {
-                    cout << "La dificultad debe estar entre 1 y 100.\n";
-                }
-            } while (dificultad < 1 || dificultad > 100);
+            dificultad = obtenerEntero("Ingrese la dificultad del entrenamiento (1-100): ", 1, 100);
 
             //evaluación del entrenamiento
             if (pokemon.nivel_poder >= dificultad) {
@@ -190,7 +176,7 @@ void entrenarPokemon() { //función para entrenar un Pokémon
                 cout << "Entrenamiento fallido. " << pokemon.nombre << " necesita más práctica antes de intentarlo de nuevo.\n";
             }
 
-            break; //salir del ciclo después de encontrar el Pokémon
+            break;
         }
     }
 
@@ -217,7 +203,7 @@ void mostrarEquipoPokemon() { //función para mostrar el equipo Pokémon
     }
 }
 
-void mostrarPokemonMasFuerte() { //funcion menu 4
+void mostrarPokemonMasFuerte() { //funcion que muestra el pokémon mas fuerte de los que hay registrados
     if (equipoPokemon.empty()) {
         cout << "No hay Pokémon registrados aún.\n";
     } else {
