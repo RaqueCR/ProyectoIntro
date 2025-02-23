@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <locale.h>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ vector<Pokemon> equipoPokemon; //vector para almacenar al equipo pokemon
 void mostrarMenu();
 
 int main() {
+    setlocale(LC_ALL, "");//caracteres en español
     int opcion;
 
     //bucle
