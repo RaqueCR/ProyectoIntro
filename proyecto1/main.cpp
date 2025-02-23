@@ -17,6 +17,7 @@ void mostrarMenu();
 void registrarPokemon(); //prototipo de la función para registrar un Pokémon
 void entrenarPokemon(); //prototipo de la función para entrenar un Pokémon
 void mostrarEquipoPokemon(); //prototipo de la función para mostrar el equipo Pokémon
+void mostrarPokemonMasFuerte(); //prototipo de la función para mostrar el Pokémon más fuerte
 bool idExiste(int id); //prototipo de la función para validar ID existente
 string obtenerTipoPokemon(int opcion); //prototipo para obtener el tipo de Pokémon
 string obtenerTipoEntrenamiento(int opcion); //prototipo para obtener el tipo de entrenamiento
@@ -43,7 +44,7 @@ int main() {
                 mostrarEquipoPokemon(); //llamada a la función para mostrar el equipo
                 break;
             case 4:
-                cout << "Opción 4: Mostrar el Pokémon más fuerte\n";
+                mostrarPokemonMasFuerte(); //llamada a la función para mostrar el Pokémon más fuerte
                 break;
             case 5:
                 cout << "Saliendo del programa...\n";
@@ -213,5 +214,27 @@ void mostrarEquipoPokemon() { //función para mostrar el equipo Pokémon
             cout << "  Nivel de Poder: " << pokemon.nivel_poder << "\n";
             cout << "-------------------------\n";
         }
+    }
+}
+
+void mostrarPokemonMasFuerte() { //funcion menu 4
+    if (equipoPokemon.empty()) {
+        cout << "No hay Pokémon registrados aún.\n";
+    } else {
+        Pokemon masFuerte = equipoPokemon[0];
+
+        for (const auto& pokemon : equipoPokemon) {
+            if (pokemon.nivel_poder > masFuerte.nivel_poder) {
+                masFuerte = pokemon;
+            }
+        }
+
+        cout << "\n=========================\n";
+        cout << "POKÉMON MÁS FUERTE\n";
+        cout << "=========================\n";
+        cout << "Nombre: " << masFuerte.nombre << "\n";
+        cout << "Tipo: " << masFuerte.tipo << "\n";
+        cout << "Nivel de Poder: " << masFuerte.nivel_poder << "\n";
+        cout << "=========================\n";
     }
 }
