@@ -15,8 +15,10 @@ vector<Pokemon> equipoPokemon; //vector para almacenar al equipo pokemon
 
 void mostrarMenu();
 void registrarPokemon(); //prototipo de la función para registrar un Pokémon
+void entrenarPokemon(); //prototipo de la función para entrenar un Pokémon
 bool idExiste(int id); //prototipo de la función para validar ID existente
 string obtenerTipoPokemon(int opcion); //prototipo para obtener el tipo de Pokémon
+string obtenerTipoEntrenamiento(int opcion); //prototipo para obtener el tipo de entrenamiento
 
 int main() {
     setlocale(LC_ALL, "");//caracteres en español
@@ -34,7 +36,7 @@ int main() {
                 registrarPokemon(); //llamada a la función de registro
                 break;
             case 2:
-                cout << "Opción 2: Entrenar un Pokémon\n";
+                entrenarPokemon(); //llamada a la función de entrenamiento
                 break;
             case 3:
                 cout << "Opción 3: Mostrar equipo Pokémon\n";
@@ -80,6 +82,15 @@ string obtenerTipoPokemon(int opcion) { //función para obtener el tipo de Pokémo
         case 2: return "Agua";
         case 3: return "Planta";
         case 4: return "Eléctrico";
+        default: return "Inválido";
+    }
+}
+
+string obtenerTipoEntrenamiento(int opcion) { //función para obtener el tipo de entrenamiento
+    switch (opcion) {
+        case 1: return "Combate en gimnasio";
+        case 2: return "Batalla con otro entrenador";
+        case 3: return "Práctica de habilidades";
         default: return "Inválido";
     }
 }
@@ -134,4 +145,55 @@ void registrarPokemon() { //función para registrar un Pokémon
     //agregar el Pokémon al vector
     equipoPokemon.push_back(nuevoPokemon);
     cout << "¡Pokémon registrado exitosamente!\n";
+}
+
+void entrenarPokemon() { //función para entrenar un Pokémon
+    int id, tipoEntrenamiento, dificultad;
+    bool encontrado = false;
+
+    //ingreso del ID
+    cout << "Ingrese el ID del Pokémon a entrenar: ";
+    cin >> id;
+
+    //buscar el Pokémon por ID
+    for (auto& pokemon : equipoPokemon) {
+        if (pokemon.id == id) {
+            encontrado = true;
+
+            //selección del tipo de entrenamiento
+            do {
+                cout << "Seleccione el tipo de entrenamiento:\n";
+                cout << "1. Combate en gimnasio\n2. Batalla con otro entrenador\n3. Práctica de habilidades\n";
+                cout << "Ingrese una opción válida: ";
+                cin >> tipoEntrenamiento;
+                if (obtenerTipoEntrenamiento(tipoEntrenamiento) == "Inválido") {
+                    cout << "Opción inválida. Intente de nuevo.\n";
+                }
+            } while (obtenerTipoEntrenamiento(tipoEntrenamiento) == "Inválido");
+
+            //ingreso de la dificultad
+            do {
+                cout << "Ingrese la dificultad del entrenamiento (1-100): ";
+                cin >> dificultad;
+                if (dificultad < 1 || dificultad > 100) {
+                    cout << "La dificultad debe estar entre 1 y 100.\n";
+                }
+            } while (dificultad < 1 || dificultad > 100);
+
+            //evaluación del entrenamiento
+            if (pokemon.nivel_poder >= dificultad) {
+                pokemon.nivel_poder += 10;
+                cout << "¡Entrenamiento exitoso! " << pokemon.nombre << " ha ganado +10 puntos de poder.\n";
+            } else {
+                cout << "Entrenamiento fallido. " << pokemon.nombre << " necesita más práctica antes de intentarlo de nuevo.\n";
+            }
+
+            break; //salir del ciclo después de encontrar el Pokémon
+        }
+    }
+
+    //mensaje si el ID no existe
+    if (!encontrado) {
+        cout << "No se encontró un Pokémon con el ID ingresado.\n";
+    }
 }
