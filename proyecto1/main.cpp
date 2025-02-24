@@ -1,23 +1,31 @@
+/****************************************************
+ * Proyecto 1: Introducción a la Programación - 00831
+ * Autor: Raquel Maria Fernandez Fernandez
+ * Cedula: 208300391
+ * Descripción: Programa que permite registrar, entrenar y mostrar
+ * Pokemones usando estructuras, vectores y diversas validaciones.
+ ****************************************************/
+
 #include <iostream>
-#include <vector>
+#include <vector>//para trabajar con vectores
 #include <locale.h> //caracteres en español
 #include <limits> //limpiar entrada
 
-//Raquel Maria Fernandez Fernandez -  0208300391
-
 using namespace std;
 
-struct Pokemon { //estructura pokemon
+//estructura pokemon
+struct Pokemon {
     string nombre;
     int id;
     string tipo;
     int nivel_poder;
 };
 
-vector<Pokemon> equipoPokemon; //vector para almacenar al equipo pokemon
+//vector para almacenar al equipo pokemon
+vector<Pokemon> equipoPokemon;
 
 //inicializacion
-void mostrarMenu();
+void mostrarMenu(); //prototipo para mostrar el menú principal
 void registrarPokemon(); //prototipo de la función para registrar un Pokémon
 void entrenarPokemon(); //prototipo de la función para entrenar un Pokémon
 void mostrarEquipoPokemon(); //prototipo de la función para mostrar el equipo Pokémon
@@ -28,7 +36,7 @@ string obtenerTipoEntrenamiento(int opcion); //prototipo para obtener el tipo de
 int obtenerEntero(string mensaje, int minimo, int maximo); //prototipo para validar entrada de enteros
 
 int main() {
-    setlocale(LC_ALL, "");//caracteres en español, referencia: https://www.youtube.com/watch?v=yIoPQQA1j2Y&ab_channel=CertiJob
+    setlocale(LC_ALL, ""); //caracteres en español, referencia: https://www.youtube.com/watch?v=yIoPQQA1j2Y&ab_channel=CertiJob
     int opcion;
 
     //bucle
@@ -61,19 +69,22 @@ int main() {
     return 0;
 }
 
-void mostrarMenu() { //función para mostrar el menú principal
-    cout << "\n=============================\n";
+//función para mostrar el menú principal
+void mostrarMenu() {
+
+    cout << "\n--------------------------------\n";
     cout << "SISTEMA DE ENTRENAMIENTO POKÉMON\n";
-    cout << "=============================\n";
+    cout << "--------------------------------\n";
     cout << "1. Registrar un Pokémon\n";
     cout << "2. Entrenar un Pokémon\n";
     cout << "3. Mostrar el equipo Pokémon\n";
     cout << "4. Mostrar el Pokémon más fuerte\n";
     cout << "5. Salir del programa\n";
-    cout << "=============================\n";
+    cout << "--------------------------------\n";
 }
 
-bool idExiste(int id) { //función para verificar si el ID ya existe
+//función para verificar si el ID ya existe
+bool idExiste(int id) {
     for (const auto& pokemon : equipoPokemon) {
         if (pokemon.id == id) {
             return true;
@@ -82,7 +93,8 @@ bool idExiste(int id) { //función para verificar si el ID ya existe
     return false;
 }
 
-string obtenerTipoPokemon(int opcion) { //función para obtener el tipo de Pokémon
+//función para obtener el tipo de Pokémon
+string obtenerTipoPokemon(int opcion) {
     switch (opcion) {
         case 1: return "Fuego";
         case 2: return "Agua";
@@ -92,7 +104,8 @@ string obtenerTipoPokemon(int opcion) { //función para obtener el tipo de Poké
     }
 }
 
-string obtenerTipoEntrenamiento(int opcion) { //función para obtener el tipo de entrenamiento
+//función para obtener el tipo de entrenamiento
+string obtenerTipoEntrenamiento(int opcion) {
     switch (opcion) {
         case 1: return "Combate en gimnasio";
         case 2: return "Batalla con otro entrenador";
@@ -101,9 +114,12 @@ string obtenerTipoEntrenamiento(int opcion) { //función para obtener el tipo de
     }
 }
 
-int obtenerEntero(string mensaje, int minimo, int maximo) { // Validación de entrada entera
+//validación de entrada entera
+int obtenerEntero(string mensaje, int minimo, int maximo) {
     int numero;
+
     while (true) {
+
         cout << mensaje;
         cin >> numero;
 
@@ -118,7 +134,8 @@ int obtenerEntero(string mensaje, int minimo, int maximo) { // Validación de en
     }
 }
 
-void registrarPokemon() { //función para registrar un Pokémon
+//función para registrar un Pokémon
+void registrarPokemon() {
     Pokemon nuevoPokemon;
     int tipoOpcion;
 
@@ -150,10 +167,11 @@ void registrarPokemon() { //función para registrar un Pokémon
 
     //agregar el Pokémon al vector
     equipoPokemon.push_back(nuevoPokemon);
-    cout << "¡Pokémon registrado exitosamente!\n";
+    cout << "\n¡Pokémon registrado exitosamente!\n";
 }
 
-void entrenarPokemon() { //función para entrenar un Pokémon
+//función para entrenar un Pokémon
+void entrenarPokemon() {
     int id, tipoEntrenamiento, dificultad;
     bool encontrado = false;
 
@@ -174,9 +192,9 @@ void entrenarPokemon() { //función para entrenar un Pokémon
             //evaluación del entrenamiento
             if (pokemon.nivel_poder >= dificultad) {
                 pokemon.nivel_poder += 10;
-                cout << "¡Entrenamiento exitoso! " << pokemon.nombre << " ha ganado +10 puntos de poder.\n";
+                cout << "\n¡Entrenamiento exitoso! " << pokemon.nombre << " ha ganado +10 puntos de poder.\n";
             } else {
-                cout << "Entrenamiento fallido. " << pokemon.nombre << " necesita más práctica antes de intentarlo de nuevo.\n";
+                cout << "\nEntrenamiento fallido. " << pokemon.nombre << " necesita más práctica antes de intentarlo de nuevo.\n";
             }
 
             break;
@@ -189,25 +207,32 @@ void entrenarPokemon() { //función para entrenar un Pokémon
     }
 }
 
-void mostrarEquipoPokemon() { //función para mostrar el equipo Pokémon
+
+//función para mostrar el equipo Pokémon
+void mostrarEquipoPokemon() {
     if (equipoPokemon.empty()) {
+
         cout << "No hay Pokémon registrados aún.\n";
     } else {
-        cout << "\n=========================\n";
+
+        cout << "\n-----------------------------\n";
         cout << "EQUIPO POKÉMON\n";
-        cout << "=========================\n";
+        cout << "-----------------------------\n";
         for (const auto& pokemon : equipoPokemon) {
+
             cout << "- Nombre: " << pokemon.nombre << "\n";
             cout << "  ID: " << pokemon.id << "\n";
             cout << "  Tipo: " << pokemon.tipo << "\n";
             cout << "  Nivel de Poder: " << pokemon.nivel_poder << "\n";
-            cout << "-------------------------\n";
+            cout << "-----------------------------\n";
         }
     }
 }
 
-void mostrarPokemonMasFuerte() { //funcion que muestra el pokémon mas fuerte de los que hay registrados
+//funcion que muestra el pokémon mas fuerte de los que hay registrados
+void mostrarPokemonMasFuerte() {
     if (equipoPokemon.empty()) {
+
         cout << "No hay Pokémon registrados aún.\n";
     } else {
         Pokemon masFuerte = equipoPokemon[0];
@@ -218,12 +243,12 @@ void mostrarPokemonMasFuerte() { //funcion que muestra el pokémon mas fuerte de
             }
         }
 
-        cout << "\n=========================\n";
+        cout << "\n---------------------------\n";
         cout << "POKÉMON MÁS FUERTE\n";
-        cout << "=========================\n";
+        cout << "---------------------------\n";
         cout << "Nombre: " << masFuerte.nombre << "\n";
         cout << "Tipo: " << masFuerte.tipo << "\n";
         cout << "Nivel de Poder: " << masFuerte.nivel_poder << "\n";
-        cout << "=========================\n";
+        cout << "--------------------------\n";
     }
 }
